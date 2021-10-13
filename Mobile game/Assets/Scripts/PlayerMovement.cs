@@ -5,20 +5,20 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     
-    public GameObject player;
+    public GameObject player;  
+    public GameObject jumpButton;
+    public Buttons buttonScript;
     public Rigidbody rb;
     public float smooth = 0.4f;
     public float newRotation;
     public float sensitivity = 6;
     private Vector3 currentAcceleration, initialAcceleration;
-    public bool getJump;
+    public float jumpPower = 0;
+    public bool getJumped;    
+    public bool hasJumped;
 
 
 
-    public static void Main(string[] args)
-    {
-        Buttons.GetJump();
-    }
 
 
     // Start is called before the first frame update
@@ -26,14 +26,15 @@ public class PlayerMovement : MonoBehaviour
     {
         initialAcceleration = Input.acceleration;
         currentAcceleration = Vector3.zero;
+       
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        //GetJump();
         Jump();
-
+        GetButtonScript();
     }
 
 
@@ -49,7 +50,28 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+
+        if (getJumped == true)
+        {
+            print("i can jump");
+            jumpPower = 20;
+            rb.AddForce(0, jumpPower * Time.deltaTime, 0);
+        }
+        else
+        {
+            getJumped = false;
+        }
+
+
+
+    }
+
+    void GetButtonScript()
+    {
         
+        buttonScript = jumpButton.GetComponent<Buttons>();
+        getJumped = buttonScript.jumped;
+
     }
         
 }

@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class Buttons : MonoBehaviour
 {
-    public bool jumpPressed;
+    public bool pressedButton;
+    public bool jumped;    
 
-    // Start is called before the first frame update
-    void Start()
+    public void GetJump(bool Jumped)
     {
-        
+
+
+        if(pressedButton == true)
+        {
+            jumped = true;
+            print("pressed");
+        } 
+        if(jumped == true)
+        {
+            jumped = false;
+            pressedButton = false;
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void pressed()
     {
-        
-    }
-
-    public static void GetJump()
-    {
-        
+        pressedButton = true;
     }
 }
