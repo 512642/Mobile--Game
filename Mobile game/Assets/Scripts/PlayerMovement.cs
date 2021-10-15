@@ -16,8 +16,8 @@ public class PlayerMovement : MonoBehaviour
     public float jumpPower = 0;
     public bool getJumped = false;
     public float xSpeed;
-    public VariableJoystick joyStick;
-    public float jSpeed;
+    public float speed;
+    public VariableJoystick variableJoystick;
 
 
 
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         JoyStickMovement();
         KeyBoardMovement();
@@ -52,10 +52,11 @@ public class PlayerMovement : MonoBehaviour
 
     void JoyStickMovement()
     {
-        jSpeed = 30;
-        Vector3 direction = Vector3.forward * joyStick.Vertical + Vector3.right * joyStick.Horizontal;
-        rb.AddForce(direction * jSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        speed = 30;
+        Vector3 direction = Vector3.forward * variableJoystick.Vertical + Vector3.right * variableJoystick.Horizontal;
+        rb.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
+
    void KeyBoardMovement()
     {
 
