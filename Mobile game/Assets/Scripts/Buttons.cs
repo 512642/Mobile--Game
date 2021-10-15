@@ -4,28 +4,18 @@ using UnityEngine;
 
 public class Buttons : MonoBehaviour
 {
-    public bool pressedButton;
-    public bool jumped;    
+    public bool jumped = false; 
 
-    public void GetJump(bool Jumped)
-    {
+    public void Jumping(bool jumped)
+    {       
+        jumped = true;
 
-
-        if(pressedButton == true)
-        {
-            jumped = true;
-            print("pressed");
-        } 
         if(jumped == true)
         {
-            jumped = false;
-            pressedButton = false;
-        }
+            print("pressed");
+        }      
 
     }
 
-    public void pressed()
-    {
-        pressedButton = true;
-    }
+
 }

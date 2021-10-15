@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    
+    public GameObject respawn;
     public GameObject player;  
     public GameObject jumpButton;
     public Buttons buttonScript;
@@ -14,8 +14,11 @@ public class PlayerMovement : MonoBehaviour
     public float sensitivity = 6;
     private Vector3 currentAcceleration, initialAcceleration;
     public float jumpPower = 0;
-    public bool getJumped;    
-    public bool hasJumped;
+    public bool getJumped = false;
+    public float xSpeed;
+    public VariableJoystick joyStick;
+    public float jSpeed;
+
 
 
 
@@ -25,16 +28,15 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         initialAcceleration = Input.acceleration;
-        currentAcceleration = Vector3.zero;
-       
-       
+        currentAcceleration = Vector3.zero;       
     }
 
     // Update is called once per frame
     void Update()
     {
-        Jump();
-        GetButtonScript();
+        JoyStickMovement();
+        KeyBoardMovement();
+        Respawn();
     }
 
 
@@ -48,33 +50,61 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(0, 0, -newRotation);
     }
 
-    void Jump()
+    void JoyStickMovement()
     {
+        jSpeed = 30;
+        Vector3 direction = Vector3.forward * joyStick.Vertical + Vector3.right * joyStick.Horizontal;
+        rb.AddForce(direction * jSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
+    }
+   void KeyBoardMovement()
+    {
+
+
+        if (Input.GetKey("a"))
+        {
+            transform.position += new Vector3(0, 0, -xSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey("d"))
+        {
+            transform.position += new Vector3(0, 0, xSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey("w"))
+        {
+            transform.position += new Vector3(-xSpeed * Time.deltaTime, 0, 0);
+        }
+        if (Input.GetKey("s"))
+        {
+            transform.position += new Vector3(xSpeed * Time.deltaTime, 0, 0);
+        }
+    }
+
+    public void Respawn()
+    {
+        if (player.transform.position.y < 1)
+        {
+            player.transform.position = respawn.transform.position;
+        }
+    }
+
+    public void Jump(bool getJumped)
+    {
+        getJumped = true;
+        
 
         if (getJumped == true)
         {
-            print("i can jump");
-            jumpPower = 20;
-            rb.AddForce(0, jumpPower * Time.deltaTime, 0);
+            rb.AddForce(transform.up * jumpPower);
+            
         }
-        else
-        {
-            getJumped = false;
-        }
+     }
 
 
-
-    }
-
-    void GetButtonScript()
+    void OnCollisionEnter(Collision col)
     {
-        
-        buttonScript = jumpButton.GetComponent<Buttons>();
-        getJumped = buttonScript.jumped;
-
+        if (col.gameObject.tag == "respawn")
+        {
+            player.transform.position = respawn.transform.position;
+        }
     }
-        
+
 }
-
-
-
