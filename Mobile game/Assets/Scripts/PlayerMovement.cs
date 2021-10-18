@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public bool getJumped = false;
     public float xSpeed;
     public float speed;
-    public VariableJoystick variableJoystick;
+    public FloatingJoystick floatingJoystick;
 
 
 
@@ -49,11 +49,11 @@ public class PlayerMovement : MonoBehaviour
 
         transform.Rotate(0, 0, -newRotation);
     }
-
+    
     void JoyStickMovement()
     {
         speed = 30;
-        Vector3 direction = Vector3.forward * variableJoystick.Vertical + Vector3.right * variableJoystick.Horizontal;
+        Vector3 direction = Vector3.forward * floatingJoystick.Horizontal + Vector3.left * floatingJoystick.Vertical;
         rb.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
 
@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (getJumped == true)
         {
-            rb.AddForce(transform.up * jumpPower);
+            rb.AddForce(0, jumpPower, 0);
             
         }
      }
