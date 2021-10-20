@@ -163,7 +163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
       propertyPath: m_AnchorMax.x
@@ -795,8 +795,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1197316026}
   - {fileID: 2123269015}
+  - {fileID: 1197316026}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -838,7 +838,7 @@ RectTransform:
   m_Children:
   - {fileID: 626334597}
   m_Father: {fileID: 1106511470}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1083,14 +1083,18 @@ MonoBehaviour:
   jumpButton: {fileID: 1197316025}
   buttonScript: {fileID: 1197316030}
   rb: {fileID: 1360934550}
-  smooth: 0.4
-  newRotation: 0
-  sensitivity: 6
+  smooth: 0.1
+  newXRotation: 0
+  newZRotation: 0
+  sensitivity: 2
   jumpPower: 450
   getJumped: 0
-  xSpeed: 15
+  xSpeed: 30
   speed: 0
   floatingJoystick: {fileID: 63305224}
+  playerSettingsScript: {fileID: 4995390996244428797, guid: 5d4336d9d46aa174385e8760264a7981, type: 3}
+  tiltChosen: 0
+  maxSpeed: 20
 --- !u!1 &1556262920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1419,7 +1423,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828808869}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

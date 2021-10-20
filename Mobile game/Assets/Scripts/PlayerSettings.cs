@@ -13,6 +13,8 @@ public class PlayerSettings : MonoBehaviour
     public void MovementChoice()
     {
         useTilt = !useTilt;
+        PlayerPrefs.SetInt("saveTilt", (useTilt ? 1 : 0));
+        useTilt = (PlayerPrefs.GetInt("saveTilt") != 0);
     }
 
 

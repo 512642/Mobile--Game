@@ -9,8 +9,9 @@ public class PlayerMovement : MonoBehaviour
     public GameObject jumpButton;
     public Buttons buttonScript;
     public Rigidbody rb;
-    public float smooth = 0.4f;
-    public float newRotation;
+    public float smooth = 0.1f;
+    public float newXRotation;
+    public float newZRotation;
     public float sensitivity = 6;
     private Vector3 currentAcceleration, initialAcceleration;
     public float jumpPower = 0;
@@ -18,7 +19,9 @@ public class PlayerMovement : MonoBehaviour
     public float xSpeed;
     public float speed;
     public FloatingJoystick floatingJoystick;
-    public PlayerSettings playerSettings;
+    public PlayerSettings playerSettingsScript;
+    public bool tiltChosen;
+    public float maxSpeed = 20;
 
 
 
@@ -33,17 +36,24 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        SetMovement();
+        Tilt();
+        SetMaxSpeed();
+        //SaveMovementChoice();
         Respawn();
+    }
+    //caps the speed at maxSpeed
+    public void SetMaxSpeed()
+    {
+         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
     }
 
 
-    public void SetMovement()
+    /*public void SaveMovementChoice()
     {
-        
-        if (useTilt == true)
+        tiltChosen = playerSettingsScript.useTilt;
+        if (tiltChosen == true)
         {
             Tilt();
         }
@@ -51,45 +61,29 @@ public class PlayerMovement : MonoBehaviour
         {
             JoyStickMovement();
         }
-    }
 
+
+    }*/
+
+    //access the accelerometer to control the ball
     public void Tilt()
     {
         currentAcceleration = Vector3.Lerp(currentAcceleration, Input.acceleration - initialAcceleration, Time.deltaTime / smooth);
 
-        newRotation = Mathf.Clamp(currentAcceleration.x * sensitivity, -1, 1);
+        newZRotation = Mathf.Clamp(currentAcceleration.z * sensitivity, -1, 1);
+        newXRotation = Mathf.Clamp(currentAcceleration.x * sensitivity, -1, 1);
 
-        transform.Rotate(0, 0, -newRotation);
+        transform.Rotate(0, 0, -newZRotation);
+        transform.Rotate(0, -newXRotation, 0 );
     }
-    
+    //places a joystick where the user clicks to move the ball
     public void JoyStickMovement()
     {
-        speed = 30;
+        speed = 20;
         Vector3 direction = Vector3.forward * floatingJoystick.Horizontal + Vector3.left * floatingJoystick.Vertical;
         rb.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
 
-   void KeyBoardMovement()
-    {
-
-
-        if (Input.GetKey("a"))
-        {
-            transform.position += new Vector3(0, 0, -xSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey("d"))
-        {
-            transform.position += new Vector3(0, 0, xSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey("w"))
-        {
-            transform.position += new Vector3(-xSpeed * Time.deltaTime, 0, 0);
-        }
-        if (Input.GetKey("s"))
-        {
-            transform.position += new Vector3(xSpeed * Time.deltaTime, 0, 0);
-        }
-    }
 
     public void Respawn()
     {
@@ -119,5 +113,8 @@ public class PlayerMovement : MonoBehaviour
             player.transform.position = respawn.transform.position;
         }
     }
+
+
+
 
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
@@ -13,8 +14,13 @@ public class Buttons : MonoBehaviour
         if(jumped == true)
         {
             print("pressed");
-        }      
+        }     
+    }
 
+
+    public void ChangeToGameScene()
+    {
+        SceneManager.LoadScene("Level_1");
     }
 
 
