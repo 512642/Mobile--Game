@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float xSpeed;
     public float speed;
     public FloatingJoystick floatingJoystick;
+    public PlayerSettings playerSettings;
 
 
 
@@ -34,15 +35,26 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        JoyStickMovement();
-        KeyBoardMovement();
+        SetMovement();
         Respawn();
     }
 
 
-    void Tilt()
+    public void SetMovement()
     {
+        
+        if (useTilt == true)
+        {
+            Tilt();
+        }
+        else
+        {
+            JoyStickMovement();
+        }
+    }
 
+    public void Tilt()
+    {
         currentAcceleration = Vector3.Lerp(currentAcceleration, Input.acceleration - initialAcceleration, Time.deltaTime / smooth);
 
         newRotation = Mathf.Clamp(currentAcceleration.x * sensitivity, -1, 1);
@@ -50,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(0, 0, -newRotation);
     }
     
-    void JoyStickMovement()
+    public void JoyStickMovement()
     {
         speed = 30;
         Vector3 direction = Vector3.forward * floatingJoystick.Horizontal + Vector3.left * floatingJoystick.Vertical;
