@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,15 +23,18 @@ public class PlayerMovement : MonoBehaviour
     public PlayerSettings playerSettingsScript;
     public bool tiltChosen;
     public float maxSpeed = 20;
-
-
-
+    public int livesRemaining = 3;
+    public bool lifeLeft;
+    public bool takeLife;
+    public GameObject gameOverText;
+    public Text livesCounter;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        gameOverText.SetActive(false);
         initialAcceleration = Input.acceleration;
         currentAcceleration = Vector3.zero;       
     }
@@ -38,15 +42,21 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Tilt();
-        SetMaxSpeed();
-        //SaveMovementChoice();
-        Respawn();
+        HoldMethods();
     }
     //caps the speed at maxSpeed
     public void SetMaxSpeed()
     {
          rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+    }
+    void HoldMethods()
+    {
+        LivesDisplay();
+        JoyStickMovement();
+        Tilt();
+        SetMaxSpeed();
+        //SaveMovementChoice();
+        CheckLivesLeft();
     }
 
 
@@ -87,9 +97,31 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
+        takeLife = false;
         if (player.transform.position.y < 1)
         {
             player.transform.position = respawn.transform.position;
+            livesRemaining--;
+
+        }
+    }
+    
+
+    public void LivesDisplay()
+    {
+        livesCounter.text = "Lives left: " + livesRemaining;
+    }
+
+    public void CheckLivesLeft()
+    {
+        if(livesRemaining > 0)
+        {
+            Respawn();
+        }
+        else
+        {
+            player.SetActive(false);
+            gameOverText.SetActive(true);
         }
     }
 
