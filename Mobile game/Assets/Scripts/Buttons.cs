@@ -5,7 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
-    public bool jumped = false; 
+    public GameObject player;
+    GameObject retry;
+    public PlayerMovement playerMovementScript;
+
+    bool jumped = false; 
 
     public void Jumping(bool jumped)
     {       
@@ -23,5 +27,10 @@ public class Buttons : MonoBehaviour
         SceneManager.LoadScene("Level_1");
     }
 
+    public void RestartLevel()
+    {
+        int playerLivesLeft = playerMovementScript.livesRemaining;
+        playerLivesLeft = 3;
+    }
 
 }

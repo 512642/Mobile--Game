@@ -28,12 +28,14 @@ public class PlayerMovement : MonoBehaviour
     public bool takeLife;
     public GameObject gameOverText;
     public Text livesCounter;
+    public GameObject retryButton;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        retryButton.SetActive(false);
         gameOverText.SetActive(false);
         initialAcceleration = Input.acceleration;
         currentAcceleration = Vector3.zero;       
@@ -53,39 +55,41 @@ public class PlayerMovement : MonoBehaviour
     {
         LivesDisplay();
         JoyStickMovement();
-        Tilt();
-        SetMaxSpeed();
-        //SaveMovementChoice();
+        //Tilt();
+        SetMaxSpeed();        
+        CheckLivesLeft();
+    }
+
+    public void TiltVairables()
+    {
+        float XDriection;
+        float YDirection;
+
+ 
+    }
+
+
+
+    public void RetryLevel()
+    {
+        player.SetActive(true);
+        gameOverText.SetActive(false);
+        retryButton.SetActive(false);
+        livesRemaining = 3;
         CheckLivesLeft();
     }
 
 
-    /*public void SaveMovementChoice()
-    {
-        tiltChosen = playerSettingsScript.useTilt;
-        if (tiltChosen == true)
-        {
-            Tilt();
-        }
-        else
-        {
-            JoyStickMovement();
-        }
 
 
-    }*/
 
-    //access the accelerometer to control the ball
-    public void Tilt()
-    {
-        currentAcceleration = Vector3.Lerp(currentAcceleration, Input.acceleration - initialAcceleration, Time.deltaTime / smooth);
 
-        newZRotation = Mathf.Clamp(currentAcceleration.z * sensitivity, -1, 1);
-        newXRotation = Mathf.Clamp(currentAcceleration.x * sensitivity, -1, 1);
+   
 
-        transform.Rotate(0, 0, -newZRotation);
-        transform.Rotate(0, -newXRotation, 0 );
-    }
+
+
+
+    
     //places a joystick where the user clicks to move the ball
     public void JoyStickMovement()
     {
@@ -117,11 +121,14 @@ public class PlayerMovement : MonoBehaviour
         if(livesRemaining > 0)
         {
             Respawn();
+            
         }
         else
         {
             player.SetActive(false);
             gameOverText.SetActive(true);
+            retryButton.SetActive(true);
+
         }
     }
 
@@ -142,11 +149,27 @@ public class PlayerMovement : MonoBehaviour
     {
         if (col.gameObject.tag == "respawn")
         {
+            livesRemaining--;
             player.transform.position = respawn.transform.position;
         }
+
     }
 
 
 
 
 }
+
+
+    /*access the accelerometer to control the ball
+    public void Tilt()
+    {
+        currentAcceleration = Vector3.Lerp(currentAcceleration, Input.acceleration - initialAcceleration, Time.deltaTime / smooth);
+
+        newZRotation = Mathf.Clamp(currentAcceleration.z * sensitivity, -1, 1);
+        newXRotation = Mathf.Clamp(currentAcceleration.x * sensitivity, -1, 1);
+
+        transform.Rotate(0, 0, -newZRotation);
+        transform.Rotate(0, -newXRotation, 0 );
+        }
+        */
